@@ -25,12 +25,14 @@
     "express": "^4.18.1",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
+    "googleapis": "^104.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.8",
+    "nodemailer": "^6.7.5",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "nodemon": "^1.19.4"
   }
 }

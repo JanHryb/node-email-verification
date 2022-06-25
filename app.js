@@ -23,7 +23,11 @@ app.use(flash());
 
 // routes
 app.use("/", require("./routes/index"));
-app.use("/user", require("./routes/user"));
+app.use("/", require("./routes/user"));
+
+app.get("*", (req, res) => {
+  return res.status(404).render("notFound");
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

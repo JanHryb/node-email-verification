@@ -9,31 +9,38 @@
 </head>
 
 <body>
-    <form action="/user/register">
-        <h2>register</h2>
-        <section>
-            <label for="firstName">first name</label>
-            <input type="text" name="firstName" id="firstName" required>
-        </section>
-        <section>
-            <label for="lastName">last name</label>
-            <input type="text" name="lastName" id="lastName" required>
-        </section>
-        <section>
-            <label for="email">email</label>
-            <input type="email" name="email" id="email" required />
-        </section>
-        <section>
-            <label for="password">password</label>
-            <input type="password" name="password" id="password" required />
-        </section>
-        <section>
-            <label for="passwordRepeat">repeat password</label>
-            <input type="password" name="passwordRepeat" id="passwordRepeat" required />
-        </section>
-        <section>
-            <button type="submit">create account</button>
-        </section>
+    <form action="/register" method="POST">
+        <% if(messages.error){ %>
+            <section>
+                <p>
+                    <%= messages.error %>
+                </p>
+            </section>
+            <% } %>
+                <h2>register</h2>
+                <section>
+                    <label for="firstName">first name</label>
+                    <input type="text" name="firstName" id="firstName" required>
+                </section>
+                <section>
+                    <label for="lastName">last name</label>
+                    <input type="text" name="lastName" id="lastName" required>
+                </section>
+                <section>
+                    <label for="email">email</label>
+                    <input type="email" name="email" id="email" required />
+                </section>
+                <section>
+                    <label for="password">password</label>
+                    <input type="password" name="password" id="password" required />
+                </section>
+                <section>
+                    <label for="passwordRepeat">repeat password</label>
+                    <input type="password" name="passwordRepeat" id="passwordRepeat" required />
+                </section>
+                <section>
+                    <button type="submit">create account</button>
+                </section>
     </form>
 </body>
 
