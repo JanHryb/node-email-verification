@@ -5,6 +5,7 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("express-flash");
+const httpStatusCodes = require("./config/httpStatusCodes");
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use("/", require("./routes/index"));
 app.use("/", require("./routes/user"));
 
 app.get("*", (req, res) => {
-  return res.status(404).render("notFound");
+  return res.status(httpStatusCodes.NotFound).render("notFound");
 });
 
 const PORT = process.env.PORT || 3000;

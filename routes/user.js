@@ -2,20 +2,21 @@ const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const nodemailer = require("../config/nodemailer");
+const httpStatusCodes = require("../config/httpStatusCodes");
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
 router.get("/user", (req, res) => {
-  return res.status(200).render("user/user");
+  return res.status(httpStatusCodes.OK).render("user/user");
 });
 
 router.get("/register", (req, res) => {
-  return res.status(200).render("user/register");
+  return res.status(httpStatusCodes.OK).render("user/register");
 });
 
 router.get("/login", (req, res) => {
-  return res.status(200).render("user/login");
+  return res.status(httpStatusCodes.OK).render("user/login");
 });
 
 router.get("/mailverify", (req, res) => {
@@ -27,6 +28,9 @@ router.get("/mailverify", (req, res) => {
       async (err, decoded) => {
         if (err) {
           console.log(err);
+          return res
+            .status(httpStatusCodes.Forbidden)
+            .json("mail token is expired!");
         } else {
           try {
             const id = decoded.id;
@@ -34,12 +38,16 @@ router.get("/mailverify", (req, res) => {
               { id },
               { verified: true }
             );
+            req.flash("success", "you account has been successfully verified");
+            return res.status(httpStatusCodes.OK).redirect("/login");
           } catch (err) {
             console.log(err);
           }
         }
       }
     );
+  } else {
+    return res.status(httpStatusCodes.Forbidden).render("notFound");
   }
 });
 
@@ -48,19 +56,19 @@ router.post("/register", (req, res) => {
 
   if (firstName.length < 3) {
     req.flash("error", "first name should contain at least 3 characters");
-    return res.status(400).redirect("/register");
+    return res.status(httpStatusCodes.BadRequest).redirect("/register");
   }
   if (lastName.length < 2) {
     req.flash("error", "last name should contain at least 2 characters");
-    return res.status(400).redirect("/register");
+    return res.status(httpStatusCodes.BadRequest).redirect("/register");
   }
   if (password.length < 6) {
     req.flash("error", "password should contain at least 6 characters");
-    return res.status(400).redirect("/register");
+    return res.status(httpStatusCodes.BadRequest).redirect("/register");
   }
   if (password !== passwordRepeat) {
     req.flash("error", "passwords aren't equal");
-    return res.status(400).redirect("/register");
+    return res.status(httpStatusCodes.BadRequest).redirect("/register");
   }
 
   bcrypt.hash(password, 10, async (err, hash) => {
@@ -71,7 +79,7 @@ router.post("/register", (req, res) => {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         req.flash("error", "user with that email already exist");
-        return res.status(400).redirect("/register");
+        return res.status(httpStatusCodes.BadRequest).redirect("/register");
       }
       const user = await User.create({
         first_name: firstName,
@@ -81,11 +89,9 @@ router.post("/register", (req, res) => {
       });
       nodemailer.sendMail(email, firstName, user._id);
       req.flash("success", "you have been successfully registered");
-      return res.status(201).redirect("/login");
+      return res.status(httpStatusCodes.Created).redirect("/login");
     } catch (err) {
       console.log(err);
-      // req.flash("error", `${err._message}`);
-      // return res.status(400).redirect("/register");
     }
   });
 });
