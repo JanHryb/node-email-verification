@@ -9,13 +9,37 @@
 </head>
 
 <body>
-    <% if (messages.success) { %>
-        <section>
-            <p>
-                <%= messages.success %>
-            </p>
-        </section>
-        <% } %>
+    <form action="/login" method="POST">
+        <% if (messages.success) { %>
+            <section>
+                <p>
+                    <%= messages.success %>
+                </p>
+            </section>
+            <% } %>
+                <% if(messages.error){ %>
+                    <section>
+                        <p>
+                            <%= messages.error %>
+                        </p>
+                    </section>
+                    <% } %>
+                        <section>
+                            <label for="email">email</label>
+                            <input type="email" name="email" id="email" required />
+                        </section>
+                        <section>
+                            <label for="password">password</label>
+                            <input type="password" name="password" id="password" required />
+                        </section>
+                        <section>
+                            <input type="checkbox" name="rememberMe" id="rememberMe">
+                            <label for="rememberMe">remember me</label>
+                        </section>
+                        <section>
+                            <button type="submit">login</button>
+                        </section>
+    </form>
 </body>
 
 </html>

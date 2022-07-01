@@ -3,20 +3,38 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const nodemailer = require("../config/nodemailer");
 const httpStatusCodes = require("../config/httpStatusCodes");
+const auth = require("../config/auth");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 const router = express.Router();
 
-router.get("/user", (req, res) => {
-  return res.status(httpStatusCodes.OK).render("user/user");
+router.get("/user", auth.isAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user;
+    const user = await User.findOne({ userId });
+    return res.status(httpStatusCodes.OK).render("user/user", { user });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", auth.alreadyAuthenticated, (req, res) => {
   return res.status(httpStatusCodes.OK).render("user/register");
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", auth.alreadyAuthenticated, (req, res) => {
   return res.status(httpStatusCodes.OK).render("user/login");
+});
+
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next();
+    }
+    req.flash("success", "you are logged out");
+    return res.redirect("/login");
+  });
 });
 
 router.get("/mailverify", (req, res) => {
@@ -38,8 +56,9 @@ router.get("/mailverify", (req, res) => {
               { id },
               { verified: true }
             );
-            req.flash("success", "you account has been successfully verified");
-            return res.status(httpStatusCodes.OK).redirect("/login");
+            return res
+              .status(httpStatusCodes.OK)
+              .json("your account has been successfully verified");
           } catch (err) {
             console.log(err);
           }
@@ -88,7 +107,10 @@ router.post("/register", (req, res) => {
         password: hash,
       });
       nodemailer.sendMail(email, firstName, user._id);
-      req.flash("success", "you have been successfully registered");
+      req.flash(
+        "success",
+        "account has been created, please verify it on your email"
+      );
       return res.status(httpStatusCodes.Created).redirect("/login");
     } catch (err) {
       console.log(err);
@@ -96,6 +118,21 @@ router.post("/register", (req, res) => {
   });
 });
 
-router.post("/login", (req, res) => {});
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    // successRedirect: "/user",
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  (req, res) => {
+    if (req.body.rememberMe) {
+      req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 14; //cookie expires after 14 days
+    } else {
+      req.session.cookie.maxAge = null; // cookie expires at end of session
+    }
+    return res.redirect("/user");
+  }
+);
 
 module.exports = router;
