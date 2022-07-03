@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:wght@300;400&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+body {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+form {
+  padding: 1.5em;
+  width: min-content;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+form h2 {
+  text-align: center;
+}
+
+form section {
+  margin-bottom: 1em;
+}
+
+form section input {
+  font-size: 1.05em;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #1d1d1d;
+  width: 250px;
+}
+
+form section button {
+  width: 100%;
+  padding: 0.8em;
+  border: none;
+  color: white;
+  background-color: #1d1d1d;
+  border-radius: 5px;
+}
+
+form section button:hover {
+  cursor: pointer;
+}
+
+form section:last-child {
+  margin-bottom: 0;
+}
+
+form .rememberme-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+form .rememberme-wrapper input {
+  width: auto;
+  margin-right: 0.2em;
+}
+/*# sourceMappingURL=main.css.map */

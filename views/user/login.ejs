@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/styles/main.css">
     <title>login</title>
 </head>
 
@@ -24,6 +25,7 @@
                         </p>
                     </section>
                     <% } %>
+                        <h2>login</h2>
                         <section>
                             <label for="email">email</label>
                             <input type="email" name="email" id="email" required />
@@ -32,13 +34,23 @@
                             <label for="password">password</label>
                             <input type="password" name="password" id="password" required />
                         </section>
-                        <section>
+                        <section class="rememberme-wrapper">
                             <input type="checkbox" name="rememberMe" id="rememberMe">
                             <label for="rememberMe">remember me</label>
                         </section>
                         <section>
                             <button type="submit">login</button>
                         </section>
+                        <% if(messages.error=='please verify your email' ){ %>
+                            <section>
+                                <p>
+                                    don't have a verification email? <a href="/resendemailverification">resend</a>
+                                </p>
+                            </section>
+                            <% } %>
+                                <section>
+                                    <p>don't have an account? <a href="/register">register</a></p>
+                                </section>
     </form>
 </body>
 

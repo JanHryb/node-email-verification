@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/styles/main.css">
+    <title>resend email verification</title>
+</head>
+
+<body>
+    <form action="/resendemailverification" method="POST">
+        <% if(messages.error){ %>
+            <section>
+                <p>
+                    <%= messages.error %>
+                </p>
+            </section>
+            <% } %>
+                <h2>resend email verification</h2>
+                <section>
+                    <label for="email">email</label>
+                    <input type="email" name="email" id="email" required />
+                </section>
+                <section>
+                    <button type="submit">resend</button>
+                </section>
+    </form>
+</body>
+
+</html>

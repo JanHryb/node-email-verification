@@ -2,7 +2,9 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  req.flash("error", "please log in to view that resource");
+  if (req.originalUrl != "/logout") {
+    req.flash("error", "please log in to view that resource");
+  }
   res.redirect("/login");
 };
 

@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:wght@300;400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+body {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+form {
+  padding: 1.5em;
+  width: min-content;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  h2 {
+    text-align: center;
+  }
+  section {
+    margin-bottom: 1em;
+    input {
+      font-size: 1.05em;
+      padding-top: 0.1em;
+      padding-bottom: 0.1em;
+      outline: none;
+      border: none;
+      border-bottom: 2px solid rgb(29, 29, 29);
+      width: 250px;
+    }
+    button {
+      width: 100%;
+      padding: 0.8em;
+      border: none;
+      color: rgb(255, 255, 255);
+      background-color: rgb(29, 29, 29);
+      border-radius: 5px;
+    }
+    button:hover {
+      cursor: pointer;
+    }
+  }
+  section:last-child {
+    margin-bottom: 0;
+  }
+  .rememberme-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    input {
+      width: auto;
+      margin-right: 0.2em;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const nodemailer = require("../config/nodemailer");
+const nodemailer = require("../config/nodemailerGmail");
 const httpStatusCodes = require("../config/httpStatusCodes");
 const auth = require("../config/auth");
 const jwt = require("jsonwebtoken");
@@ -27,7 +27,7 @@ router.get("/login", auth.alreadyAuthenticated, (req, res) => {
   return res.status(httpStatusCodes.OK).render("user/login");
 });
 
-router.get("/logout", (req, res, next) => {
+router.get("/logout", auth.isAuthenticated, (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next();
@@ -36,6 +36,16 @@ router.get("/logout", (req, res, next) => {
     return res.redirect("/login");
   });
 });
+
+router.get(
+  "/resendemailverification",
+  auth.alreadyAuthenticated,
+  (req, res) => {
+    return res
+      .status(httpStatusCodes.OK)
+      .render("user/resendemailverification");
+  }
+);
 
 router.get("/mailverify", (req, res) => {
   const tokenMailVerification = req.query.id;
@@ -56,9 +66,8 @@ router.get("/mailverify", (req, res) => {
               { id },
               { verified: true }
             );
-            return res
-              .status(httpStatusCodes.OK)
-              .json("your account has been successfully verified");
+            req.flash("success", "your account has been successfully verified");
+            return res.status(httpStatusCodes.OK).redirect("/");
           } catch (err) {
             console.log(err);
           }
@@ -67,6 +76,32 @@ router.get("/mailverify", (req, res) => {
     );
   } else {
     return res.status(httpStatusCodes.Forbidden).render("notFound");
+  }
+});
+
+router.post("/resendemailverification", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      req.flash("error", "account with that email doesn't exist");
+      return res
+        .status(httpStatusCodes.BadRequest)
+        .redirect("/resendemailverification");
+    }
+    if (user.verified) {
+      req.flash("error", "account with that email is already verified");
+      return res
+        .status(httpStatusCodes.BadRequest)
+        .redirect("/resendemailverification");
+    }
+    nodemailer.sendMail(email, user.first_name, user._id);
+    return res
+      .status(httpStatusCodes.Created)
+      .json("verification email has been sent");
+  } catch (err) {
+    console.log(err);
   }
 });
 

@@ -10,8 +10,15 @@ const verify = async (email, password, done) => {
     if (!user) {
       return done(null, false, { message: "that email is not registered" });
     }
-
+    if (!user.verified) {
+      return done(null, false, {
+        message: "please verify your email",
+      });
+    }
     bcrypt.compare(password, user.password, (err, result) => {
+      if (err) {
+        return done(err);
+      }
       if (result) {
         return done(null, user);
       }
