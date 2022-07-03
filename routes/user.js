@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const nodemailer = require("../config/nodemailerGmail");
+//const nodemailer = require("../config/nodemailerGmailOauth");
 const httpStatusCodes = require("../config/httpStatusCodes");
 const auth = require("../config/auth");
 const jwt = require("jsonwebtoken");
