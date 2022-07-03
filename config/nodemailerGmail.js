@@ -14,7 +14,7 @@ const createTokenMailVerification = (id) => {
   return url;
 };
 
-const sendMail = async (email, firstName, id) => {
+const sendMail = (email, firstName, id) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
